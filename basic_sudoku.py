@@ -9,7 +9,7 @@
 # G1 G2 G3 | G4 G5 G6 | G7 G8 G9
 # H1 H2 H3 | H4 H5 H6 | H7 H8 H9
 # I1 I2 I3 | I4 I5 I6 | I7 I8 I9
-
+import numpy as np
 from z3 import Int, And, Solver, Distinct
 
 rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
@@ -22,7 +22,7 @@ EMPTY_SUDOKU = [[Int(f"{r}{c}") for c in COLS] for r in rows]
 # https://ericpony.github.io/z3py-tutorial/guide-examples.htm
 
 
-class BaseSudoku:
+class Sudoku:
 
     def __init__(self):
         x = EMPTY_SUDOKU
@@ -46,22 +46,34 @@ class BaseSudoku:
         self.s = s
         self.x = x
 
-    def set_value(self, row, col, val):
-        r = ord(row-65) # convert row letter to index A = 0...
+    def set_value(self, row: str, col: int, val: int):
+        """Set the cell att given row at the val
+        ex A3 = 4 """
+        r = ord(row)-65  # convert row letter to index A = 0...
         self.s.add(self.x[r][col] == val)
 
+    def set_row(self, row: str, vals: str):
+        """set an entire row at once,
+        input vals as a string, using spaces or underscores for unknown cells
+        ex:
+          - '82  4  6 '
+          - "__16__89_"
+        """
+        for c, val in zip(COLS, vals):
+            if val in "123456789":
+                self.set_value(row, c, int(val))
+
     def print_solution(self):
-        self.s.check()
-        m = self.s.model()
+        m = self.get_solution()
         for r in ROWS:
             if r % 3 == 0:
                 print("+–––––––––+–––––––––+–––––––––+")
-
-            rs = [str(m.evaluate(self.x[r][c])) for c in COLS]
+            rs = m[r]
             print(f"| {rs[0]}  {rs[1]}  {rs[2]} | {rs[3]}  {rs[4]}  {rs[5]} | {rs[6]}  {rs[7]}  {rs[8]} |")
         print("+–––––––––+–––––––––+–––––––––+")
 
+    def get_solution(self) -> np.array:
+        self.s.check()
+        m = self.s.model()
+        return np.array([[m.evaluate(self.x[r][c]).as_long() for c in COLS] for r in ROWS])
 
-if __name__ == "__main__":
-    sudoku = BaseSudoku()
-    sudoku.print_solution()
