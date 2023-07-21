@@ -52,3 +52,15 @@ killer_ans = [[6, 1, 3, 8, 2, 7, 9, 4, 5],
               [8, 3, 2, 4, 9, 6, 7, 5, 1],
               [1, 9, 6, 7, 5, 3, 4, 8, 2],
               [7, 4, 5, 2, 1, 8, 6, 9, 3]]
+
+
+# https://app.crackingthecryptic.com/sudoku/mJqT6RDG2L
+# this one has no normal hints only cages
+crypic_hint = [
+    (37, "B1,B2,C1,C2,D1,D2,D3,E1"),
+    (13, "C6,D6,D7,E7"),
+    (7, "B7,C7,C8"),
+    (24, "E9,F9,G9"),
+    (37, "F3,F4,G2,G3,G4,H3"),
+    (16, "I5,I6,H6,H7,I7")
+]

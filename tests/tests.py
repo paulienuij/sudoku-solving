@@ -4,7 +4,7 @@ import numpy as np
 
 from basic import simple_hint, simple_ans, hard_hint, hard_ans
 from basic_sudoku import Sudoku
-from killer import killer_hint, killer_cell_hints, killer_ans
+from killer import killer_hint, killer_cell_hints, killer_ans, crypic_hint
 from killer_sudoku import KillerSudoku
 
 
@@ -28,7 +28,7 @@ class TestingBasicSudokuSolver(unittest.TestCase):
         result = base_sudoku.get_solution()
         assert np.alltrue(result == ans)
 
-    def test_killer_solver_hard(self):
+    def test_killer_solver_easy(self):
         sudoku = KillerSudoku()
         for row, row_hint in zip("ABCDEFGHI", killer_hint):
             sudoku.set_row(row, row_hint)
