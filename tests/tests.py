@@ -2,9 +2,10 @@ import unittest
 
 import numpy as np
 
+from basic import simple_hint, simple_ans, hard_hint, hard_ans
 from basic_sudoku import Sudoku
-from hard import hard_hint, hard_ans
-from simple import simple_hint, simple_ans
+from killer import killer_hint, killer_cell_hints, killer_ans
+from killer_sudoku import KillerSudoku
 
 
 class TestingBasicSudokuSolver(unittest.TestCase):
@@ -25,6 +26,19 @@ class TestingBasicSudokuSolver(unittest.TestCase):
 
         ans = np.array(hard_ans)
         result = base_sudoku.get_solution()
+        assert np.alltrue(result == ans)
+
+    def test_killer_solver_hard(self):
+        sudoku = KillerSudoku()
+        for row, row_hint in zip("ABCDEFGHI", killer_hint):
+            sudoku.set_row(row, row_hint)
+
+        for s, cells in killer_cell_hints:
+            cell_names = cells.split(",")
+            sudoku.add_killerbox(s, cell_names)
+
+        ans = np.array(killer_ans)
+        result = sudoku.get_solution()
         assert np.alltrue(result == ans)
 
 
