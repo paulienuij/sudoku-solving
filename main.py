@@ -12,6 +12,7 @@
    I1 I2 I3 | I4 I5 I6 | I7 I8 I9
    """
 from variant_sudoku import SudokuVariant
+from visualise import plot_sudoku
 
 # LAYLA
 # this one has no normal hints only cages
@@ -46,12 +47,42 @@ humming_hint = [
     "E4,F3,G4,F5,G6,F7"
 ]
 
+# SILENT KILLER
+# https://logic-masters.de/Raetselportal/Raetsel/zeigen.php?id=000EX1
+# https://tinyurl.com/mpsskzpt
+killer_hints = [
+    (9, "A6,B6"),
+    (15, "C4,C5,C6"),
+    (10, "C8,C9"),
+    (15, "D3,E3,F3"),
+    (13, "E7,F7"),
+    (9, "F8,F9"),
+    (9, "G1,G2"),
+    (7, "G5,G6"),
+    (10, "H3,I3"),
+    (12, "H7,H8,G8")
+]
+
+silent_hints = [
+    "C1,B1,A1,A2,A3",
+    "C4,C5,C6",
+    "C9,B9,A8",
+    "D3,E3,F3",
+    "F4,E4,D5,D6",
+    "G5,G6,F6,F7,E7",
+    "H1,I1,I2",
+    "I6,I7,H8,G9,F9"
+]
 
 if __name__ == '__main__':
 
-    # INPUT HERE
-    killer_hint = summing_hints
-    whisper_hint = humming_hint
+    # humming and summing
+    # killer_hint = summing_hints
+    # whisper_hint = humming_hint
+
+    # silent killer
+    killer_hint = killer_hints
+    whisper_hint = silent_hints
 
     sudoku = SudokuVariant()
     for s, cells in killer_hint:
@@ -63,3 +94,4 @@ if __name__ == '__main__':
         sudoku.add_german_whisper(cell_names)
 
     sudoku.print_solution()
+    plot_sudoku(sudoku)

@@ -6,6 +6,8 @@ COLS = range(9)
 ROWS = range(9)
 
 EMPTY_SUDOKU = [[Int(f"{r}{c}") for c in COLS] for r in rows]
+
+
 # https://ericpony.github.io/z3py-tutorial/guide-examples.htm
 
 class Sudoku:
@@ -25,13 +27,14 @@ class Sudoku:
 
         # each 3x3 square contains a digit at most once
         s.add([Distinct([x[3 * i0 + i][3 * j0 + j]
-                          for i in range(3) for j in range(3)])
-                            for i0 in range(3) for j0 in range(3)])
+                         for i in range(3) for j in range(3)])
+               for i0 in range(3) for j0 in range(3)])
 
         self.s = s
         self.x = x
+        self.hints = {}
 
-    def get_cell(self,  row: str, col: int):
+    def get_cell(self, row: str, col: int):
         """
         get the cell at given row and column:
 
@@ -50,15 +53,16 @@ class Sudoku:
         if not (1 <= col <= 9):
             raise ValueError("Column should be between 1 and 9")
 
-        r = ord(row) - 65 # convert row letter to index A = 0...
+        r = ord(row) - 65  # convert row letter to index A = 0...
         if not (0 <= r <= 8):
             raise ValueError(f"Row should be in ABC DEF GHI, row={row}")
 
-        return self.x[r][col-1]
+        return self.x[r][col - 1]
 
     def set_value(self, row: str, col: int, val: int):
         """Set the cell att given row at the given val:  A3 = 4 """
         self.s.add(self.get_cell(row, col) == val)
+        self.hints[row, col] = val
 
     def set_row(self, row: str, vals: str):
         """input values for an entire row as a string, using spaces or underscores for unknown cells
@@ -68,7 +72,7 @@ class Sudoku:
         """
         for c, val in zip(COLS, vals):
             if val in "123456789":
-                self.set_value(row, c+1, int(val))
+                self.set_value(row, c + 1, int(val))
 
     def print_solution(self):
         m = self.get_solution()
@@ -83,4 +87,3 @@ class Sudoku:
         print(self.s.check())
         m = self.s.model()
         return np.array([[m.evaluate(self.x[r][c]).as_long() for c in COLS] for r in ROWS])
-
