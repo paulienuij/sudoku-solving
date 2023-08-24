@@ -80,7 +80,7 @@ class Sudoku:
         print("+–––––––––+–––––––––+–––––––––+")
 
     def get_solution(self) -> np.array:
-        self.s.check()
+        print(self.s.check())
         m = self.s.model()
         return np.array([[m.evaluate(self.x[r][c]).as_long() for c in COLS] for r in ROWS])
 
