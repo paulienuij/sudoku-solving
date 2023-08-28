@@ -33,6 +33,7 @@ class Sudoku:
         self.s = s
         self.x = x
         self.hints = {}
+        self._solution = None
 
     def get_cell(self, row: str, col: int):
         """
@@ -83,7 +84,12 @@ class Sudoku:
             print(f"| {rs[0]}  {rs[1]}  {rs[2]} | {rs[3]}  {rs[4]}  {rs[5]} | {rs[6]}  {rs[7]}  {rs[8]} |")
         print("+–––––––––+–––––––––+–––––––––+")
 
+    def print_row(self, row_id):
+        print(self.get_solution()[row_id])
+
     def get_solution(self) -> np.array:
-        print(self.s.check())
-        m = self.s.model()
-        return np.array([[m.evaluate(self.x[r][c]).as_long() for c in COLS] for r in ROWS])
+        if self._solution is None:
+            print(self.s.check())
+            m = self.s.model()
+            self._solution = np.array([[m.evaluate(self.x[r][c]).as_long() for c in COLS] for r in ROWS])
+        return self._solution

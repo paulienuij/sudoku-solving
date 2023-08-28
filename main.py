@@ -74,6 +74,31 @@ silent_hints = [
     "I6,I7,H8,G9,F9"
 ]
 
+
+# decimation:
+# https://logic-masters.de/Raetselportal/Raetsel/zeigen.php?id=000EOM
+
+decimation_cages = [
+    (20, "A1,A2,B1,B2"),
+    (13, "A7,A8,A9,B9"),
+    (26, "G1,H1,I1,I2"),
+    (20, "H8,H9,I8,I9"),
+    (35, "D7,E7,E6,E5,F5,G5,G4")
+]
+
+decimation_xs = [
+    "B7,B8",
+    "C6,C7",
+    "D7,D8",
+    "D6,E6",
+    "F4,F5",
+    "E7,F7",
+    'G5,G6',
+    "G4,H4",
+    "F3,G3",
+    "G2,H2"
+]
+
 if __name__ == '__main__':
 
     # humming and summing
@@ -81,8 +106,9 @@ if __name__ == '__main__':
     # whisper_hint = humming_hint
 
     # silent killer
-    killer_hint = killer_hints
-    whisper_hint = silent_hints
+    killer_hint = decimation_cages
+    whisper_hint = []
+    xs_hint = decimation_xs
 
     sudoku = SudokuVariant()
     for s, cells in killer_hint:
@@ -93,5 +119,12 @@ if __name__ == '__main__':
         cell_names = cells.split(",")
         sudoku.add_german_whisper(cell_names)
 
-    sudoku.print_solution()
+    for cells in decimation_xs:
+        cell_names = cells.split(",")
+        sudoku.add_x(cell_names)
+
     plot_sudoku(sudoku)
+
+    sudoku.print_solution()
+    sudoku.print_row(2)
+    sudoku.print_col(2)
